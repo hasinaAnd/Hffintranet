@@ -1,0 +1,64 @@
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 1%; z-index: 1030;">
+	<div
+		class="container">
+		{# <a class="navbar-brand" href="{{ path("profil_acceuil")}}"><img src="{{ App.base_path }}/Views/assets/logoHFF.jpg" id="LogoHFF" alt="" width="150px"></a> #}
+		<a class="navbar-brand" href="{{ path("profil_acceuil")}}"><img src="{{ asset("build/images/logoHFF.jpg")}}" id="LogoHFF" alt="" width="150px"></a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent" style="color: #fbbb01;">
+			<ul
+				class="navbar-nav ms-auto mb-2 mb-lg-0">
+				{# DEBUT Récupération des id de role de l'utilisateur dans un tableau role_ids #}
+				{% set role_ids = App.user.roleIds %}
+				{# FIN Récupération des id de role de l'utilisateur dans un tableau role_ids #}
+
+				{# DEBUT Affiche le menu "Dematerialisation"  #}
+				{% set hasBDM = false %}
+				{% set hasDOM = false %}
+
+					{% for item in App.user.Applications %}
+
+						{% if item.codeApp == 'DOM' %}
+					{% set hasDOM = true %}
+				{% endif %}
+				{% endfor %}
+
+				<!-- DEBUT Dématérialisation -->
+					{% if hasDOM %}
+						<li class="nav-item dropdown" id="Dematerialisation"> <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Dématérialisation</a>
+						<ul
+							class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+							<!-- Demande d'ordre de mission -->
+							{% if hasDOM %}
+								<li class="dropdown-header">
+									Ordre de Mission</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("dom_first_form")}}">Nouvelle Demande</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("doms_liste")}}">Consultation</a>
+								</li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+							{% endif %}
+
+
+						</ul>
+					</li>
+				{% endif %}
+				<!-- FIN Dématérialisation -->
+				{# DEBUT Affiche le menu "Dematerialisation"  #}
+
+
+			</ul>
+
+
+		</div>
+
+	</div>
+</nav>
