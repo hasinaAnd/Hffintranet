@@ -199,12 +199,12 @@ class DomForm1Type extends AbstractType
                             return $personnel->getMatricule() . ' ' . $personnel->getNom() . ' ' . $personnel->getPrenoms();
                         },
                         'required' => true,
-                        'query_builder' => function (EntityRepository $repository) use ($agenceServiceIriumId) {
-                            return $repository->createQueryBuilder('p')
-                                ->where('p.agenceServiceIriumId IN (:agenceIps)')
-                                ->setParameter('agenceIps', $agenceServiceIriumId)
-                                ->orderBy('p.Matricule', 'ASC');
-                        },
+                        // 'query_builder' => function (EntityRepository $repository) use ($agenceServiceIriumId) {
+                        //     return $repository->createQueryBuilder('p')
+                        //         ->where('p.agenceServiceIriumId IN (:agenceIps)')
+                        //         ->setParameter('agenceIps', $agenceServiceIriumId)
+                        //         ->orderBy('p.Matricule', 'ASC');
+                        // },
                     ]
                 );
             })

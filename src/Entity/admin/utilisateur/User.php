@@ -11,13 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\admin\Application;
 use App\Entity\admin\utilisateur\Role;
 use App\Entity\admin\AgenceServiceIrium;
-use App\Entity\admin\utilisateur\Fonction;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\admin\utilisateur\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\admin\utilisateur\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Entity\admin\historisation\pageConsultation\UserLogger;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -109,7 +107,6 @@ class User implements UserInterface
     private $serviceAutoriser;
 
 
-
     /**
      * @ORM\ManyToMany(targetEntity=Permission::class, inversedBy="users",  cascade={"remove"})
      * @ORM\JoinTable(name="users_permission")
@@ -117,11 +114,6 @@ class User implements UserInterface
     private $permissions;
 
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=UserLogger::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $userLoggers;
 
     //=================================================================================================================================
 
@@ -132,7 +124,6 @@ class User implements UserInterface
         $this->agencesAutorisees = new ArrayCollection();
         $this->serviceAutoriser = new ArrayCollection();
         $this->permissions = new ArrayCollection();
-        $this->userLoggers = new ArrayCollection();
     }
 
 
@@ -441,36 +432,4 @@ class User implements UserInterface
     public function getUsername() {}
 
     public function getUserIdentifier() {}
-
-    /**
-     * Get the value of userLoggers
-     */
-    public function getUserLoggers(): Collection
-    {
-        return $this->userLoggers;
-    }
-
-    /**
-     * Add value to userLoggers
-     *
-     * @return self
-     */
-    public function addUserLogger(UserLogger $userLogger): self
-    {
-        $this->userLoggers[] = $userLogger;
-        $userLogger->setUser($this); // Synchronisation inverse
-        return $this;
-    }
-
-    /**
-     * Set the value of userLoggers
-     *
-     * @return  self
-     */
-    public function setUserLoggers($userLoggers)
-    {
-        $this->userLoggers = $userLoggers;
-
-        return $this;
-    }
 }
