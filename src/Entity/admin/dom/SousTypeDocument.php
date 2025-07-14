@@ -35,10 +35,6 @@ class SousTypeDocument
      */
     private $codeSousType;
 
-    /**
-     * @ORM\Column(type="string", length=50, name="Description", nullable=true)
-     */
-    private $description;
 
     /**
      * @ORM\Column(type="string", name="Date_creation")
@@ -93,17 +89,6 @@ class SousTypeDocument
     public function setCodeSousType(?string $codeSousType): self
     {
         $this->codeSousType = $codeSousType;
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
         return $this;
     }
 

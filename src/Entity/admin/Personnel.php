@@ -40,45 +40,11 @@ class Personnel
      */
     private ?string $Code_AgenceService_Sage;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $Numero_Fournisseur_IRIUM;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $Code_AgenceService_IRIUM;
-
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private ?string $Numero_Telephone = null;
 
     /**
      * @ORM\Column(type="string")
      */
     private ?string $Numero_Compte_Bancaire;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private ?DateTime $Date_creation = null;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private ?string $Libelle_AgenceService_Sage = null;
-
-    /**
-     * @ORM\Column(type="string", length=4, nullable=true)
-     */
-    private ?string $Code_Service_Agence_IRIUM = null;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private ?string $Libelle_Service_Agence_IRIUM = null;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -104,17 +70,9 @@ class Personnel
 
     public function __construct()
     {
-        $this->Date_creation = new \DateTime();
         $this->users = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function onPrePersist(): void
-    {
-        $this->Date_creation = new \DateTime();
-    }
 
     //======================================================
     // Getters and Setters...
@@ -157,39 +115,6 @@ class Personnel
         return $this;
     }
 
-    public function getNumeroFournisseurIRIUM(): ?int
-    {
-        return $this->Numero_Fournisseur_IRIUM;
-    }
-
-    public function setNumeroFournisseurIRIUM(?int $Numero_Fournisseur_IRIUM): self
-    {
-        $this->Numero_Fournisseur_IRIUM = $Numero_Fournisseur_IRIUM;
-        return $this;
-    }
-
-    public function getCodeAgenceServiceIRIUM(): ?int
-    {
-        return $this->Code_AgenceService_IRIUM;
-    }
-
-    public function setCodeAgenceServiceIRIUM(?int $Code_AgenceService_IRIUM): self
-    {
-        $this->Code_AgenceService_IRIUM = $Code_AgenceService_IRIUM;
-        return $this;
-    }
-
-    public function getNumeroTelephone(): ?string
-    {
-        return $this->Numero_Telephone;
-    }
-
-    public function setNumeroTelephone(?string $Numero_Telephone): self
-    {
-        $this->Numero_Telephone = $Numero_Telephone;
-        return $this;
-    }
-
     public function getNumeroCompteBancaire(): ?string
     {
         return $this->Numero_Compte_Bancaire;
@@ -198,39 +123,6 @@ class Personnel
     public function setNumeroCompteBancaire(string $Numero_Compte_Bancaire): self
     {
         $this->Numero_Compte_Bancaire = $Numero_Compte_Bancaire;
-        return $this;
-    }
-
-    public function getDatecreation(): ?DateTime
-    {
-        return $this->Date_creation;
-    }
-
-    public function setDatecreation(?DateTime $Date_creation): self
-    {
-        $this->Date_creation = $Date_creation;
-        return $this;
-    }
-
-    public function getLibelleAgenceServiceSage(): ?string
-    {
-        return $this->Libelle_AgenceService_Sage;
-    }
-
-    public function setLibelleAgenceServiceSage(?string $Libelle_AgenceService_Sage): self
-    {
-        $this->Libelle_AgenceService_Sage = $Libelle_AgenceService_Sage;
-        return $this;
-    }
-
-    public function getCodeServiceAgenceIRIUM(): ?string
-    {
-        return $this->Code_Service_Agence_IRIUM;
-    }
-
-    public function setCodeServiceAgenceIRIUM(?string $Code_Service_Agence_IRIUM): self
-    {
-        $this->Code_Service_Agence_IRIUM = $Code_Service_Agence_IRIUM;
         return $this;
     }
 
@@ -256,16 +148,6 @@ class Personnel
         return $this;
     }
 
-    public function getLibelleServiceAgenceIRIUM(): ?string
-    {
-        return $this->Libelle_Service_Agence_IRIUM;
-    }
-
-    public function setLibelleServiceAgenceIRIUM(?string $Libelle_Service_Agence_IRIUM): self
-    {
-        $this->Libelle_Service_Agence_IRIUM = $Libelle_Service_Agence_IRIUM;
-        return $this;
-    }
 
 
      /**
