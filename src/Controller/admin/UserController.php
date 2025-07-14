@@ -88,8 +88,6 @@ class UserController extends Controller
                 return $superieur->getId();
             }, $superieurEntities);
 
-            // Mettre à jour les supérieurs de l'utilisateur
-            $user->setSuperieurs($superieurIds);
             self::$em->persist($utilisateur);
 
             self::$em->flush();
@@ -118,9 +116,6 @@ class UserController extends Controller
         $this->verifierSessionUtilisateur();
 
         $user = self::$em->getRepository(User::class)->find($id);
-        
-        // Conversion de l'utilisateur en objet s'il est en tableau
-        $user = $this->arrayToObjet($user);
 
 
         $form = self::$validator->createBuilder(UserType::class, $user)->getForm();
@@ -130,17 +125,11 @@ class UserController extends Controller
         // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($user->getSuperieurs() === null) {
-                $user->setSuperieurs([]);
-            }
             // Récupérer les IDs des supérieurs depuis le formulaire
             $superieurEntities = $form->get('superieurs')->getData();
             $superieurIds = array_map(function ($superieur) {
                 return $superieur->getId();
             }, $superieurEntities);
-
-            // Mettre à jour les supérieurs de l'utilisateur
-            $user->setSuperieurs($superieurIds);
 
             self::$em->flush();
             return $this->redirectToRoute("utilisateur_index");

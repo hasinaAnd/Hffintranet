@@ -48,9 +48,6 @@ class DomFirstController extends Controller
         $form = self::$validator->createBuilder(DomForm1Type::class, $dom)->getForm();
         $this->traitementFormulaire($form, $request, $dom);
 
-        // historisation du page visité par l'utilisateur
-        $this->logUserVisit('dom_first_form');
-
         self::$twig->display('doms/firstForm.html.twig', [
             'form' => $form->createView(),
         ]);

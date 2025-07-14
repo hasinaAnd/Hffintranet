@@ -29,7 +29,6 @@ class Authentification extends Controller
                 }
 
                 if (!$this->ldap->userConnect($Username, $Password)) {
-                    $this->logUserVisit('security_signin'); // historisation du page visité par l'utilisateur
                     $error_msg = "Vérifier les informations de connexion, veuillez saisir le nom d'utilisateur et le mot de passe de votre session Windows";
                 } else {
                     $this->sessionService->set('user', $Username);
@@ -46,7 +45,6 @@ class Authentification extends Controller
                     $this->redirectToRoute('profil_acceuil');
                 }
             } catch (Exception $e) {
-                $this->logUserVisit('security_signin'); // historisation du page visité par l'utilisateur
                 $error_msg = $e->getMessage();
             }
         }

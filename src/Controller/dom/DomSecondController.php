@@ -88,8 +88,6 @@ class DomSecondController extends Controller
             $this->historiqueOperation->sendNotificationCreation('Votre demande a été enregistré', $dom->getNumeroOrdreMission(), 'doms_liste', true);
         }
 
-        $this->logUserVisit('dom_second_form'); // historisation du page visité par l'utilisateur
-
         self::$twig->display('doms/secondForm.html.twig', [
             'form'          => $form->createView(),
             'is_temporaire' => $is_temporaire,

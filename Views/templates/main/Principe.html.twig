@@ -42,9 +42,6 @@
 								<li>
 									<a class="dropdown-item" href="{{ path("doms_liste")}}">Consultation</a>
 								</li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
 							{% endif %}
 
 
@@ -52,13 +49,17 @@
 					</li>
 				{% endif %}
 				<!-- FIN Dématérialisation -->
-				{# DEBUT Affiche le menu "Dematerialisation"  #}
+				<li class="nav-item dropdown">
 
+					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #fbbb01;">{{ App.user.nomUtilisateur}}</a>
 
+					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+						<li>
+							<a class="dropdown-item" href="{{ path("auth_deconnexion")}}" id="logoutLink">Déconnexion</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
-
-
 		</div>
-
 	</div>
 </nav>

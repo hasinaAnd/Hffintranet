@@ -80,12 +80,6 @@ class DomsListeController extends Controller
         // Filtrer les critères pour supprimer les valeurs "falsy"
         $filteredCriteria = array_filter($criteriaTab);
 
-        // Déterminer le type de log
-        $logType = empty($filteredCriteria) ? ['doms_liste'] : ['doms_liste_search', $filteredCriteria];
-
-        // Appeler la méthode logUserVisit avec les arguments définis
-        $this->logUserVisit(...$logType);
-
         self::$twig->display(
             'doms/list.html.twig',
             [
@@ -217,8 +211,6 @@ class DomsListeController extends Controller
         //enregistre le critère dans la session
         $this->sessionService->set('dom_search_criteria', $criteria);
         $this->sessionService->set('dom_search_option', $option);
-
-        $this->logUserVisit('dom_list_annuler'); // historisation du page visité par l'utilisateur
 
         self::$twig->display(
             'doms/list.html.twig',

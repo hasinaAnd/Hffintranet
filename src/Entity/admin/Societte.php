@@ -2,12 +2,10 @@
 
 namespace App\Entity\admin;
 
-use App\Entity\badm\Badm;
-use App\Entity\TypeReparation;
+
 use App\Entity\Traits\DateTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\admin\utilisateur\User;
-use App\Entity\dit\DemandeIntervention;
 use Doctrine\Common\Collections\Collection;
 use App\Repository\admin\SocietteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,7 +45,6 @@ class Societte
     public function __construct()
     {
         $this->users = new ArrayCollection();
-
     }
 
     public function getId(): int
@@ -62,7 +59,7 @@ class Societte
         return $this->nom;
     }
 
-  
+
     public function setNom($nom): self
     {
         $this->nom = $nom;
@@ -75,7 +72,7 @@ class Societte
         return $this->codeSociete;
     }
 
-    
+
     public function setCodeSociete($codeSociete): self
     {
         $this->codeSociete = $codeSociete;
@@ -83,10 +80,10 @@ class Societte
         return $this;
     }
 
-    
-     /**
+
+    /**
      * @return Collection|User[]
-     */ 
+     */
     public function getUsers(): Collection
     {
         return $this->users;
@@ -110,7 +107,7 @@ class Societte
                 $user->setSociettes(null);
             }
         }
-        
+
         return $this;
     }
 

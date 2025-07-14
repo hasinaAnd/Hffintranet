@@ -4,19 +4,12 @@ namespace App\Entity\admin;
 
 
 use App\Entity\dom\Dom;
-use App\Entity\badm\Badm;
-use App\Entity\cas\Casier;
 use App\Entity\admin\Service;
 use App\Entity\Traits\DateTrait;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\cas\CasierValider;
-use App\Entity\mutation\Mutation;
 use App\Entity\admin\utilisateur\User;
-use App\Entity\da\DemandeAppro;
-use App\Entity\dit\DemandeIntervention;
 use App\Repository\admin\AgenceRepository;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\tik\DemandeSupportInformatique;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

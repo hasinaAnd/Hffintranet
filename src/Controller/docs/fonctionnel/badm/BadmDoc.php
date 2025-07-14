@@ -27,8 +27,6 @@ class BadmDoc extends Controller
         // Convertir le Markdown en HTML
         $htmlContent = $this->parsedown->text($markdownContent);
 
-        $this->logUserVisit('badm_index'); // historisation du page visité par l'utilisateur
-
         // Rendre le template avec le contenu HTML
         self::$twig->display(
             'doc/fonctionnel/badm/badm.html.twig',

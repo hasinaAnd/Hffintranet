@@ -87,19 +87,6 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $superieurs = [];
-
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="users",  cascade={"remove"})
-     * @ORM\JoinColumn(name="fonctions_id", referencedColumnName="id")
-     */
-    private  $fonction;
-
-    /**
      * @ORM\ManyToOne(targetEntity=AgenceServiceIrium::class, inversedBy="userAgenceService",  cascade={"remove"})
      * @ORM\JoinColumn(name="agence_utilisateur", referencedColumnName="id")
      */
@@ -136,19 +123,6 @@ class User implements UserInterface
      */
     private $userLoggers;
 
-    /**
-     * @ORM\Column(type="string", length=10, name="num_tel")
-     *
-     * @var string 
-     */
-    private ?string $numTel;
-
-    /**
-     * @ORM\Column(type="string", length=50, name="poste")
-     *
-     * @var string
-     */
-    private ?string $poste;
     //=================================================================================================================================
 
     public function __construct()
@@ -286,64 +260,6 @@ class User implements UserInterface
     public function setPersonnels($personnel): self
     {
         $this->personnels = $personnel;
-
-        return $this;
-    }
-
-    public function getSuperieurs(): array
-    {
-        if ($this->superieurs !== null) {
-            return $this->superieurs;
-        } else {
-            return [];
-        }
-    }
-
-    public function setSuperieurs(array $superieurs): self
-    {
-        $this->superieurs = $superieurs;
-
-        return $this;
-    }
-
-    public function addSuperieur(User $superieurId): self
-    {
-
-        $superieurIds[] = $superieurId->getId();
-
-        if ($this->superieurs === null) {
-            $this->superieurs = [];
-        }
-
-        if (!in_array($superieurIds, $this->superieurs, true)) {
-            $this->superieurs[] = $superieurId;
-        }
-
-        return $this;
-    }
-
-    public function removeSuperieur(User $superieurId): self
-    {
-        $superieurIds[] = $superieurId->getId();
-
-        if (($key = array_search($superieurId, $this->superieurs, true)) !== false) {
-            unset($this->superieurs[$key]);
-            $this->superieurs = array_values($this->superieurs);
-        }
-
-        return $this;
-    }
-
-
-    public function getFonction()
-    {
-        return $this->fonction;
-    }
-
-
-    public function setFonction($fonction): self
-    {
-        $this->fonction = $fonction;
 
         return $this;
     }
@@ -554,54 +470,6 @@ class User implements UserInterface
     public function setUserLoggers($userLoggers)
     {
         $this->userLoggers = $userLoggers;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of numTel
-     *
-     * @return  string
-     */
-    public function getNumTel()
-    {
-        return $this->numTel;
-    }
-
-    /**
-     * Set the value of numTel
-     *
-     * @param  string  $numTel
-     *
-     * @return  self
-     */
-    public function setNumTel(string $numTel)
-    {
-        $this->numTel = $numTel;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of poste
-     *
-     * @return  string
-     */
-    public function getPoste()
-    {
-        return $this->poste;
-    }
-
-    /**
-     * Set the value of poste
-     *
-     * @param  string  $poste
-     *
-     * @return  self
-     */
-    public function setPoste(string $poste)
-    {
-        $this->poste = $poste;
 
         return $this;
     }

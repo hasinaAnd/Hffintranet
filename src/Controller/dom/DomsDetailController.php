@@ -27,10 +27,6 @@ class DomsDetailController extends Controller
             $is_temporaire = 'TEMPORAIRE';
         }
 
-        $this->logUserVisit('Dom_detail', [
-            'id' => $id,
-        ]); // historisation du page visité par l'utilisateur
-
         self::$twig->display(
             'doms/detail.html.twig',
             [

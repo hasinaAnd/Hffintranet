@@ -3,18 +3,11 @@
 namespace App\Entity\admin;
 
 use App\Entity\dom\Dom;
-use App\Entity\badm\Badm;
-use App\Entity\cas\Casier;
 use App\Entity\Traits\DateTrait;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\mutation\Mutation;
-use App\Form\demandeInterventionType;
-use App\Entity\dit\DemandeIntervention;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\tik\DemandeSupportInformatique;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\admin\StatutDemandeRepository;
-use App\Entity\admin\tik\TkiStatutTicketInformatique;
+
 
 /**
  * @ORM\Entity(repositoryClass=StatutDemandeRepository::class)

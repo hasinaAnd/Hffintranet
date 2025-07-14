@@ -15,8 +15,6 @@ class ProfilControl extends Controller
         //verification si user connecter
         $this->verifierSessionUtilisateur();
 
-        $this->logUserVisit('profil_acceuil'); // historisation du page visité par l'utilisateur
-
         self::$twig->display(
             'main/accueil.html.twig'
         );
