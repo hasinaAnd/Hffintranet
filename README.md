@@ -24,6 +24,8 @@ php proxie.php
 export const baseUrl = "/Hffintranet_maquette";
 ```
 
+- creation de la base de donnée HFF_INTRANET_MAQUETTE
+- executé les requêtes dans le dossier sql pour la creation de table et les données pré definie
 - creation de fichier .env,
 
 ```Bash
