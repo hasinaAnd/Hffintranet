@@ -3,12 +3,14 @@
 ## ✅ Prérequis
 
 - **SQL Server** version **19.2**
+- utiliser le protocole LDAP pour la connexion
 - Configuration de **SQL Server dans ODBC** (via le panneau de configuration Windows)
 - **WampServer** version **3.3.2** (avec **PHP 7.4**)
 - Configuration du fichier `php.ini` :
   - Activer les extensions suivantes :
     - `extension=pdo_odbc`
     - `extension=odbc`
+    - `extension=ldap`
 
 ---
 
