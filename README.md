@@ -1,31 +1,49 @@
 # DOCUMENTATION HFF INTERANET
 
-## configuration du php.ini pour la production
+## Pre-requis
 
-- display_errors = Off
-- display_startup_errors = Off
-- log_errors = On
-- error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+- sqlServeur V19.2
+- configuration de sqlserver dans ODBC
+- installation de wamp3.3.2 (php7.4)
+- configuration de php.ini
 
-## configuration du php.ini pour la taille de ficher à uploder
+## Etape à suivre:
 
-- upload_max_filesize = 5M
-- post_max_size =5M
-
-## configuration du php.ini pour la durée de session par defaut
-
-session.gc_maxlifetime = 3600
-
-## à chaque deployement executé ceci
+- exportation de la code source dans github de hasinaAnd, (https://github.com/hasinaAnd/Hffintranet)
+- istallation de composer
+- creation de dossier var\cache\proxies
+- excuté la commande
 
 ```Bash
-vendor/bin/doctrine orm:generate-proxies
+php proxie.php
 ```
 
-## ajouter ceci si on vient de le deploier
-
-fichier config.js
+- creation du fichier config.js dans Views\js\utils, ajouter la ligne suivant
 
 ```Bash
-export const baseUrl = "/Hffintranet";
+export const baseUrl = "/Hffintranet_maquette";
+```
+
+- creation de fichier .env,
+
+```Bash
+#connexion à la bas ede donnée sqlServer
+DB_DNS_SQLSERV=
+DB_USERNAME_SQLSERV=
+DB_PASSWORD_SQLSERV=
+
+
+#connexion à la bas ede donnée sqlServer sans ODBC
+DB_NAME=
+DB_PASSWORD=
+DB_USERNAME=
+DB_HOST=
+
+#Chemin de base
+BASE_PATH_LONG=C:/wamp64/www/Hffintranet_maquette
+BASE_PATH_COURT=/Hffintranet_maquette
+BASE_PATH_FICHIER=C:/wamp64/www/Upload
+BASE_PATH_FICHIER_COURT=/Upload
+BASE_PATH_DOCUWARE=C:/DOCUWARE
+BASE_PATH_LOG=C:/wamp64/www/Hffintranet_maquette/var
 ```
