@@ -21,20 +21,12 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
 {
     private $session;
     private $requestStack;
-    private $tokenStorage;
-    private $domModel;
-    private $dwModel;
-    private $authorizationChecker;
 
 
     public function __construct(SessionInterface $session, RequestStack $requestStack, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
-
         $this->session = $session;
         $this->requestStack = $requestStack;
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->domModel = new DomModel;
     }
 
     public function getGlobals(): array
@@ -65,13 +57,7 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('trop_percu', [$this, 'tropPercu']),
             new TwigFunction('get_path_or_max', [$this, 'getPathOrMax']),
         ];
-    }
-
-    public function tropPercu(string $numeroDom)
-    {
-        return $this->domModel->verifierSiTropPercu($numeroDom);
     }
 }

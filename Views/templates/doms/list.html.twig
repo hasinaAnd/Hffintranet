@@ -79,11 +79,6 @@
 									<li>
 										<a class="dropdown-item fw-bold" href="#">Dupliquer</a>
 									</li>
-									{% if trop_percu(item.numeroOrdreMission) %}
-										<li>
-											<a class="dropdown-item fw-bold" href="{{ path("dom_trop_percu_form", {id:item.id}) }}">Trop perçu</a>
-										</li>
-									{% endif %}
 								</ul>
 							</div>
 						</td>
@@ -120,7 +115,5 @@
 {% endblock %}
 
 {% block javascript %}
-	<script script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 	<script src="{{ App.base_path }}/Views/js/badm/listBadm.js" type="module"></script>
-
 {% endblock %}
