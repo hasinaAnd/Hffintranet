@@ -1,47 +1,92 @@
-# DOCUMENTATION HFF INTERANET
+# 📘 HFF INTRANET – Documentation d’installation
 
-## Pre-requis
+## ✅ Prérequis
 
-- sqlServeur V19.2
-- configuration de sqlserver dans ODBC
-- installation de wamp3.3.2 (php7.4)
-- configuration de php.ini
+- **SQL Server** version **19.2**
+- Configuration de **SQL Server dans ODBC** (via le panneau de configuration Windows)
+- **WampServer** version **3.3.2** (avec **PHP 7.4**)
+- Configuration du fichier `php.ini` :
+  - Activer les extensions suivantes :
+    - `extension=pdo_odbc`
+    - `extension=odbc`
 
-## Etape à suivre:
+---
 
-- exportation de la code source dans github de hasinaAnd, (https://github.com/hasinaAnd/Hffintranet)
-- istallation de composer
-- creation de dossier var\cache\proxies
-- excuté la commande
+## 🛠️ Étapes d'installation
 
-```Bash
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/hasinaAnd/Hffintranet
+```
+
+---
+
+### 2. Installer Composer
+
+Télécharger Composer sur : https://getcomposer.org/  
+Installer les dépendances si nécessaire :
+
+```bash
+composer install
+```
+
+---
+
+### 3. Créer les dossiers nécessaires
+
+```bash
+mkdir -p var/cache/proxies
+```
+
+---
+
+### 4. Générer les fichiers proxy
+
+```bash
 php proxie.php
 ```
 
-- creation du fichier config.js dans Views\js\utils, ajouter la ligne suivant
+---
 
-```Bash
+### 5. Configurer l’URL de base pour JavaScript
+
+Créer le fichier suivant :  
+`Views/js/utils/config.js`
+
+```javascript
 export const baseUrl = "/Hffintranet_maquette";
 ```
 
-- creation de la base de donnée HFF_INTRANET_MAQUETTE
-- executé les requêtes dans le dossier sql pour la creation de table et les données pré definie
-- creation de fichier .env,
+---
 
-```Bash
-#connexion à la bas ede donnée sqlServer
+### 6. Créer la base de données
+
+Nom de la base : **HFF_INTRANET_MAQUETTE**
+
+Puis exécuter les fichiers SQL disponibles dans le dossier `/sql` :
+- Création des tables
+- Insertion des données pré-définies
+
+---
+
+### 7. Créer le fichier `.env`
+
+Créer un fichier `.env` à la racine du projet avec le contenu suivant (exemple) :
+
+```env
+# Connexion SQL Server via ODBC
 DB_DNS_SQLSERV=
 DB_USERNAME_SQLSERV=
 DB_PASSWORD_SQLSERV=
 
-
-#connexion à la bas ede donnée sqlServer sans ODBC
+# Connexion SQL Server sans ODBC
 DB_NAME=
-DB_PASSWORD=
 DB_USERNAME=
+DB_PASSWORD=
 DB_HOST=
 
-#Chemin de base
+# Chemins système
 BASE_PATH_LONG=C:/wamp64/www/Hffintranet_maquette
 BASE_PATH_COURT=/Hffintranet_maquette
 BASE_PATH_FICHIER=C:/wamp64/www/Upload
@@ -49,3 +94,5 @@ BASE_PATH_FICHIER_COURT=/Upload
 BASE_PATH_DOCUWARE=C:/DOCUWARE
 BASE_PATH_LOG=C:/wamp64/www/Hffintranet_maquette/var
 ```
+
+---
