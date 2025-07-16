@@ -2,20 +2,44 @@
 
 ## ✅ Prérequis
 
+### obligatoire
 - **SQL Server** version **19.2**
-- utiliser le protocole LDAP pour la connexion
-- Configuration de **SQL Server dans ODBC** (via le panneau de configuration Windows)
-- **WampServer** version **3.3.2** (avec **PHP 7.4**)
-- Configuration du fichier `php.ini` :
-  - Activer les extensions suivantes :
-    - `extension=pdo_odbc`
-    - `extension=odbc`
-    - `extension=ldap`
+- Active directory
+- ODBC 64
+- **PHP 7.4**
+- apache 2.4.58
+- ou **WampServer** version **3.3.2** (avec **PHP 7.4**, apache 2.4.58)
+- composer
+- git
+  
+---
+### facultatif
+- nodejs
+- gs10050w64.exe
+- TCPDF
+- FPDI
+  
 
 ---
 
 ## 🛠️ Étapes d'installation
+### environnemnet de l'ordinateur 
 
+#### 1. configuration **SQL Server dans ODBC**
+via le panneau de configuration Windows
+---
+#### 2. Active directory
+crée un AD puis utiliser le protocole LDA pour se connecter à l'application
+
+#### 3. configuration  du fichier `php.ini`
+- Activer les extensions suivantes :
+    - `extension=pdo_odbc`
+    - `extension=odbc`
+    - `extension=ldap`
+    - `extension=php_pdo_sqlsrv_74_ts_x64.dll`
+    - `extension=php_sqlsrv_74_ts_x64.dll`
+---
+### environnement de l'apllication
 ### 1. Cloner le dépôt
 
 ```bash
