@@ -26,7 +26,7 @@
 ### environnemnet de l'ordinateur 
 
 #### 1. configuration **SQL Server dans ODBC**
-via le panneau de configuration Windows
+- via le panneau de configuration Windows
 ---
 #### 2. Active directory
 crée un AD puis utiliser le protocole LDA pour se connecter à l'application
@@ -81,14 +81,14 @@ Créer le fichier suivant :
 `Views/js/utils/config.js`
 
 ```javascript
-export const baseUrl = "/Hffintranet_maquette";
+export const baseUrl = "/Hffintranet";
 ```
 
 ---
 
 ### 6. Créer la base de données
 
-Nom de la base : **HFF_INTRANET_MAQUETTE**
+Nom de la base : **NON_DE_VOTRE_BASE_DE_DONNER**
 
 Puis exécuter les fichiers SQL disponibles dans le dossier `/sql` :
 - Création des tables
@@ -113,12 +113,12 @@ DB_PASSWORD=
 DB_HOST=
 
 # Chemins système
-BASE_PATH_LONG=C:/wamp64/www/Hffintranet_maquette
-BASE_PATH_COURT=/Hffintranet_maquette
+BASE_PATH_LONG=C:/wamp64/www/Hffintranet
+BASE_PATH_COURT=/Hffintranet
 BASE_PATH_FICHIER=C:/wamp64/www/Upload
 BASE_PATH_FICHIER_COURT=/Upload
 BASE_PATH_DOCUWARE=C:/DOCUWARE
-BASE_PATH_LOG=C:/wamp64/www/Hffintranet_maquette/var
+BASE_PATH_LOG=C:/wamp64/www/Hffintranet/var
 ```
 
 ---
