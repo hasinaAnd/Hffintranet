@@ -39,7 +39,7 @@ crée un AD puis utiliser le protocole LDA pour se connecter à l'application
     - `extension=php_pdo_sqlsrv_74_ts_x64.dll`
     - `extension=php_sqlsrv_74_ts_x64.dll`
 ---
-### environnement de l'apllication
+### environnement de l'application
 ### 1. Cloner le dépôt
 
 ```bash
@@ -50,7 +50,6 @@ git clone https://github.com/hasinaAnd/Hffintranet
 
 ### 2. Installer Composer
 
-Télécharger Composer sur : https://getcomposer.org/  
 Installer les dépendances si nécessaire :
 
 ```bash
