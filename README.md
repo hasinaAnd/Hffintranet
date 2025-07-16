@@ -3,6 +3,7 @@
 ## ✅ Prérequis
 
 ### obligatoire
+
 - **SQL Server** version **19.2**
 - Active directory
 - ODBC 64
@@ -11,35 +12,45 @@
 - ou **WampServer** version **3.3.2** (avec **PHP 7.4**, apache 2.4.58)
 - composer
 - git
-  
+
 ---
+
 ### facultatif
+
 - nodejs
 - gs10050w64.exe
 - TCPDF
 - FPDI
-  
 
 ---
 
 ## 🛠️ Étapes d'installation
-### environnemnet de l'ordinateur 
+
+### environnemnet de l'ordinateur
 
 #### 1. configuration **SQL Server dans ODBC**
+
 - via le panneau de configuration Windows
+
 ---
+
 #### 2. Active directory
+
 crée un AD puis utiliser le protocole LDA pour se connecter à l'application
 
-#### 3. configuration  du fichier `php.ini`
+#### 3. configuration du fichier `php.ini`
+
 - Activer les extensions suivantes :
-    - `extension=pdo_odbc`
-    - `extension=odbc`
-    - `extension=ldap`
-    - `extension=php_pdo_sqlsrv_74_ts_x64.dll`
-    - `extension=php_sqlsrv_74_ts_x64.dll`
+  - `extension=pdo_odbc`
+  - `extension=odbc`
+  - `extension=ldap`
+  - `extension=php_pdo_sqlsrv_74_ts_x64.dll`
+  - `extension=php_sqlsrv_74_ts_x64.dll`
+
 ---
+
 ### environnement de l'application
+
 ### 1. Cloner le dépôt
 
 ```bash
@@ -90,6 +101,7 @@ export const baseUrl = "/Hffintranet";
 Nom de la base : **NON_DE_VOTRE_BASE_DE_DONNER**
 
 Puis exécuter les fichiers SQL disponibles dans le dossier `/sql` :
+
 - Création des tables
 - Insertion des données pré-définies
 
@@ -110,6 +122,12 @@ DB_NAME=
 DB_USERNAME=
 DB_PASSWORD=
 DB_HOST=
+
+# connexion connexion à l'active directory
+LDAP_DOMAIN=
+LDAP_DN=
+LDAP_HOST=
+LDAP_PORT=
 
 # Chemins système
 BASE_PATH_LONG=C:/wamp64/www/Hffintranet
