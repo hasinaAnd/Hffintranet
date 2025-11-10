@@ -587,27 +587,6 @@ class Controller
         return $user ? $user->getNomUtilisateur() : 'unknown';
     }
 
-    /**
-     * Vérifier si l'utilisateur est dans le service atelier
-     */
-    protected function estUserDansServiceAtelier(): bool
-    {
-        $user = $this->getUser();
-        if (!$user) return false;
-        $serviceIds = $user->getServiceAutoriserIds();
-        return in_array(DemandeAppro::ID_ATELIER, $serviceIds);
-    }
-
-    /**
-     * Vérifier si l'utilisateur est dans le service appro
-     */
-    protected function estUserDansServiceAppro(): bool
-    {
-        $user = $this->getUser();
-        if (!$user) return false;
-        $serviceIds = $user->getServiceAutoriserIds();
-        return in_array(DemandeAppro::ID_APPRO, $serviceIds);
-    }
 
     /**
      * Vérifier si l'utilisateur est un créateur de DA directe
