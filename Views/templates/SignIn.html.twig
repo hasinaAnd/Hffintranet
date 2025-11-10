@@ -1,7 +1,14 @@
 {% extends "baseTemplate.html.twig"%}
+
 {% block stylesheets %}
-	<link href="{{ App.base_path }}/Views/css/signin.css" rel="stylesheet"/>
+	<link href="{{ App.base_path }}/Views/css/signin.css?v=2025.10.22.08.00" rel="stylesheet"/>
 {% endblock %}
+
+{% block title %}
+	Authentification
+{% endblock %}
+
+{% block breadCrumb %}{% endblock %}
 
 {% block content %}
 	{% block nav %}{% endblock %}
@@ -17,7 +24,7 @@
 									{{ error_msg }}
 								</div>
 							{% endif %}
-							
+
 							<div class="form-outline mb-4" data-mdb-input-init>
 								<label class="form-label" for="username">Utilisateur</label>
 								<div class="input-group">
@@ -29,8 +36,8 @@
 								<label class="form-label" for="password">Mot de passe</label>
 								<div class="input-group">
 									<input type="password" id="password" class="form-control" name="Pswd" required/>
-									<span class="input-group-text" id="toggleIconContainer" title='Afficher le mot de passe'>
-										<i class="fa fa-eye cursor-pointer" id="toggleIcon" style="font-size: 0.7875rem; color: #6c757d;" aria-hidden="true"></i>
+									<span class="input-group-text" id="toggleIconContainer" data-bs-toggle="tooltip" data-bs-original-title='Afficher le mot de passe'>
+										<i class="fa fa-eye-slash cursor-pointer" id="toggleIcon" style="font-size: 0.7875rem; color: #6c757d;" aria-hidden="true"></i>
 									</span>
 								</div>
 							</div>
@@ -52,8 +59,6 @@
 	</div>
 {% endblock %}
 
-{% block footer %}{% endblock %}
-
 {% block javascript %}
-	<script src="{{ App.base_path }}/Views/js/signin.js"></script>
+	<script src="{{ App.base_path }}/Views/js/signin.js?v=2025.10.22.08.00"></script>
 {% endblock %}

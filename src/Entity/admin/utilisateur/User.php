@@ -2,20 +2,29 @@
 
 namespace App\Entity\admin\utilisateur;
 
+use App\Entity\cas\Casier;
 use App\Entity\admin\Agence;
 use App\Entity\admin\Service;
+use App\Controller\Controller;
 use App\Entity\admin\Societte;
 use App\Entity\admin\Personnel;
+use App\Entity\da\DemandeAppro;
+use App\Entity\tik\TkiPlanning;
 use App\Entity\Traits\DateTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\admin\Application;
+use App\Entity\dit\CommentaireDitOr;
 use App\Entity\admin\utilisateur\Role;
+use App\Entity\tik\TkiReplannification;
 use App\Entity\admin\AgenceServiceIrium;
+use App\Entity\admin\utilisateur\Fonction;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\admin\utilisateur\Permission;
+use App\Entity\tik\DemandeSupportInformatique;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\admin\utilisateur\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\admin\historisation\pageConsultation\UserLogger;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -58,40 +67,35 @@ class User implements UserInterface
     private $mail;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
      * @ORM\JoinTable(name="user_roles")
      */
     private $roles;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity=Application::class, inversedBy="users", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity=Application::class, inversedBy="users")
      * @ORM\JoinTable(name="users_applications")
      */
     private $applications;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Societte::class, inversedBy="users",  cascade={"remove"})
-     * @ORM\JoinColumn(name="societe_id", referencedColumnName="id")
-     */
-    private ?Societte $societtes;
-
 
     /**
-     * @ORM\ManyToOne(targetEntity=Personnel::class, inversedBy="users",  cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity=Personnel::class, inversedBy="users")
      * @ORM\JoinColumn(name="personnel_id", referencedColumnName="id")
      */
     private $personnels;
 
 
+
     /**
-     * @ORM\ManyToOne(targetEntity=AgenceServiceIrium::class, inversedBy="userAgenceService",  cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity=AgenceServiceIrium::class, inversedBy="userAgenceService")
      * @ORM\JoinColumn(name="agence_utilisateur", referencedColumnName="id")
      */
     private $agenceServiceIrium;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Agence::class, inversedBy="usersAutorises",  cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity=Agence::class, inversedBy="usersAutorises")
      * @ORM\JoinTable(name="agence_user", 
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="agence_id", referencedColumnName="id")}
@@ -101,17 +105,27 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="userServiceAutoriser",  cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity=Service::class, inversedBy="userServiceAutoriser")
      * @ORM\JoinTable(name="users_service")
      */
     private $serviceAutoriser;
 
 
+
     /**
-     * @ORM\ManyToMany(targetEntity=Permission::class, inversedBy="users",  cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity=Permission::class, inversedBy="users")
      * @ORM\JoinTable(name="users_permission")
      */
     private $permissions;
+
+
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserLogger::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $userLoggers;
+
 
 
 
@@ -124,6 +138,7 @@ class User implements UserInterface
         $this->agencesAutorisees = new ArrayCollection();
         $this->serviceAutoriser = new ArrayCollection();
         $this->permissions = new ArrayCollection();
+        $this->userLoggers = new ArrayCollection();
     }
 
 
@@ -149,8 +164,8 @@ class User implements UserInterface
 
     public function removeRole(Role $role): self
     {
-        if ($this->roles->contains($role)) {
-            $this->roles->removeElement($role);
+        if ($this->roles->removeElement($role)) {
+            $role->removeUser($this);
         }
 
         return $this;
@@ -229,19 +244,6 @@ class User implements UserInterface
 
 
 
-    public function getSociettes()
-    {
-        return $this->societtes;
-    }
-
-    public function setSociettes(?Societte $societtes): self
-    {
-        $this->societtes = $societtes;
-        return $this;
-    }
-
-
-
     public function getPersonnels()
     {
         return $this->personnels;
@@ -254,6 +256,8 @@ class User implements UserInterface
 
         return $this;
     }
+
+
 
 
 
@@ -341,8 +345,6 @@ class User implements UserInterface
 
 
 
-
-
     /**
      * RECUPERE LES id de role de l'User sous forme de tableau
      */
@@ -419,6 +421,24 @@ class User implements UserInterface
         })->toArray();
     }
 
+    public function getCodeAgenceUser()
+    {
+        return $this->agenceServiceIrium ? $this->agenceServiceIrium->getAgenceIps() : null;
+    }
+
+    public function getCodeServiceUser()
+    {
+        return $this->agenceServiceIrium ? $this->agenceServiceIrium->getServiceIps() : null;
+    }
+
+    public function getChefService()
+    {
+        if ($this->agenceServiceIrium && method_exists($this->agenceServiceIrium, '__load')) {
+            $this->agenceServiceIrium->__load();
+        }
+
+        return $this->agenceServiceIrium ? $this->agenceServiceIrium->getChefServiceId() : null;
+    }
 
     public function getPassword() {}
 
@@ -432,4 +452,47 @@ class User implements UserInterface
     public function getUsername() {}
 
     public function getUserIdentifier() {}
+
+    /**
+     * Get the value of userLoggers
+     */
+    public function getUserLoggers(): Collection
+    {
+        return $this->userLoggers;
+    }
+
+    /**
+     * Add value to userLoggers
+     *
+     * @return self
+     */
+    public function addUserLogger(UserLogger $userLogger): self
+    {
+        $this->userLoggers[] = $userLogger;
+        $userLogger->setUser($this); // Synchronisation inverse
+        return $this;
+    }
+
+    /**
+     * Set the value of userLoggers
+     *
+     * @return  self
+     */
+    public function setUserLoggers($userLoggers)
+    {
+        $this->userLoggers = $userLoggers;
+
+        return $this;
+    }
+
+
+    /** 
+     * ========================================
+     * Fonction utilitaire sur l'entité User
+     * ========================================
+     */
+    public function getFullName(): string
+    {
+        return $this->getPersonnels()->getNom() . ' ' . $this->getPersonnels()->getPrenoms();
+    }
 }

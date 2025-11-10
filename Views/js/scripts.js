@@ -2,14 +2,12 @@ import { baseUrl } from "./utils/config";
 
 import { FetchManager } from "./api/FetchManager";
 import { afficherToast } from "./utils/toastUtils";
+import { displayOverlay } from "./utils/ui/overlay";
+import { preloadAllData } from "./da/data/preloadData";
+
 // Instanciation de FetchManager avec la base URL
 const fetchManager = new FetchManager();
 
-// const loader = document.querySelector(".loader");
-
-// window.addEventListener("load", () => {
-//   loader.classList.add("fondu-out");
-// });
 let timeout;
 
 // Variables pour le chronomètre
@@ -17,12 +15,7 @@ const totalTime = 900; // Total en secondes (15 minutes)
 let timeRemaining = totalTime;
 
 const chronoText = document.getElementById("chrono-text");
-const chronoContainer = document.querySelector(".chrono-container");
 const chronoProgress = document.querySelector(".chrono-progress");
-
-if (location.pathname === `${baseUrl}/`) {
-  chronoContainer.classList.add("d-none");
-}
 
 // Fonction pour mettre à jour le chrono
 function updateChrono() {
@@ -44,7 +37,6 @@ function updateChrono() {
   }
 
   // Mettre à jour le texte
-  const hours = Math.floor(timeRemaining / 3600);
   const minutes = Math.floor((timeRemaining % 3600) / 60);
   const seconds = timeRemaining % 60;
   if (chronoText?.textContent) {
@@ -124,6 +116,34 @@ resetTimeout();
  * modal pour la déconnexion
  */
 document.addEventListener("DOMContentLoaded", function () {
+  const hasDAPinput = document.getElementById("hasDAP"); // savoir si l'utilisateur a l'autorisation de l'application DAP
+
+  if (hasDAPinput) {
+    console.log("hasDAPinput existe");
+    console.log("hasDAPinput.dataset.hasDAP = " + hasDAPinput.dataset.hasDap);
+    localStorage.setItem("hasDAP", hasDAPinput.dataset.hasDap);
+  } else {
+    console.log("hasDAPinput n'existe pas");
+  }
+
+  if (localStorage.getItem("hasDAP") === "1") {
+    (async () => {
+      await preloadAllData(); // préchargement des données dans fournisseur et désignation
+    })();
+  } else {
+    console.log("Pas besoin de preloadData");
+  }
+
+  // Les dropdowns
+  document
+    .querySelectorAll(".dropdown-menu .dropdown-toggle")
+    .forEach(function (element) {
+      element.addEventListener("click", function (e) {
+        e.stopPropagation();
+        e.nextElementSibling.classList.toggle("show");
+      });
+    });
+
   // Sélectionner le lien de déconnexion et le modal
   const logoutLink = document.getElementById("logoutLink");
   const logoutModal = new bootstrap.Modal(
@@ -235,14 +255,11 @@ window.addEventListener('beforeunload', function () {
 // Afficher l'overlay
 const allButtonAfficher = document.querySelectorAll(".ajout-overlay");
 
-// allButtonAfficher.forEach((button) => {
-//   button.addEventListener('click', () => {
-//     const overlay = document.getElementById('loading-overlay');
-//     if (overlay) {
-//       overlay.classList.remove('hidden'); // Affiche l'overlay
-//     }
-//   });
-// });
+allButtonAfficher.forEach((button) => {
+  button.addEventListener("click", () => {
+    displayOverlay(true);
+  });
+});
 
 // Masquer l'overlay après le chargement de la page
 window.addEventListener("load", () => {

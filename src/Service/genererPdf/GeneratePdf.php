@@ -6,19 +6,30 @@ use TCPDF;
 
 class GeneratePdf
 {
-    private $baseCheminDuFichier;
-    private $baseCheminDocuware;
+    protected $baseCheminDuFichier;
+    protected $baseCheminDocuware;
 
-    public function __construct()
-    {
-        $this->baseCheminDuFichier = $_ENV['BASE_PATH_FICHIER'] . '/';
-        $this->baseCheminDocuware = $_ENV['BASE_PATH_DOCUWARE'] . '/';
+    public function __construct(
+        ?string $baseCheminDuFichier = null,
+        ?string $baseCheminDocuware = null
+    ) {
+        // Injection de dépendances avec fallback sur les variables d'environnement
+        $this->baseCheminDuFichier = $baseCheminDuFichier ?? rtrim($_ENV['BASE_PATH_FICHIER'] ?? '', '/\\') . '/';
+        $this->baseCheminDocuware = $baseCheminDocuware ?? rtrim($_ENV['BASE_PATH_DOCUWARE'] ?? '', '/\\') . '/';
     }
 
-    private function copyFile(string $sourcePath, string $destinationPath): void
+    protected function copyFile(string $sourcePath, string $destinationPath): void
     {
         if (!file_exists($sourcePath)) {
             throw new \Exception("Le fichier source n'existe pas : $sourcePath");
+        }
+
+        // Créer le répertoire de destination s'il n'existe pas
+        $destinationDir = dirname($destinationPath);
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true)) {
+                throw new \Exception("Impossible de créer le répertoire : $destinationDir");
+            }
         }
 
         if (!copy($sourcePath, $destinationPath)) {
@@ -74,7 +85,7 @@ class GeneratePdf
         for ($i = 0; $i < count($pathFichiers); $i++) {
             $cheminFichierDistant = $this->baseCheminDocuware . 'ORDRE_DE_MISSION/facture_client_' . $numeroDoc . '_' . $numeroVersion . '_' . $i . '.pdf';
             $cheminDestinationLocal = $pathFichiers[$i];
-            copy($cheminDestinationLocal, $cheminFichierDistant);
+            $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
         }
     }
 
@@ -83,7 +94,7 @@ class GeneratePdf
     {
         $cheminFichierDistant = $this->baseCheminDocuware . 'RAPPORT_INTERVENTION/RI_' . $numeroOR . '-' . $numeroVersion . '.pdf';
         $cheminDestinationLocal = $this->baseCheminDuFichier . 'vri/RI_' . $numeroOR . '-' . $numeroVersion . '.pdf'; // avec tiret 6
-        copy($cheminDestinationLocal, $cheminFichierDistant);
+        $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
     }
 
     public function copyToDWCdeSoumis($fileName)
@@ -97,7 +108,7 @@ class GeneratePdf
         }
     }
 
-    // devis
+    // devis DIT
     public function copyToDWDevisSoumis($fileName)
     {
         $cheminFichierDistant = $this->baseCheminDocuware . 'ORDRE_DE_MISSION/' . $fileName;
@@ -144,6 +155,14 @@ class GeneratePdf
         $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
     }
 
+    // demande appro à valider
+    public function copyToDWDaAValider($numDa, string $suffix = "#_a_valider")
+    {
+        $cheminFichierDistant = $this->baseCheminDocuware . "ORDRE_DE_MISSION/$numDa#_a_valider.pdf";
+        $cheminDestinationLocal = $this->baseCheminDuFichier . "da/$numDa/$numDa$suffix.pdf";
+        $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
+    }
+
     //bon de commande de demande appro
     public function copyToDWBcDa($fileName, $numDa)
     {
@@ -157,6 +176,31 @@ class GeneratePdf
     {
         $cheminFichierDistant = $this->baseCheminDocuware . 'ORDRE_DE_MISSION/' . $fileName;
         $cheminDestinationLocal = $this->baseCheminDuFichier . 'da/' . $numDa . '/' . $fileName;
+        $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
+    }
+
+
+    // devis Magasin
+    public function copyToDWDevisMagasin($fileName, $numeroDevis)
+    {
+        $cheminFichierDistant = $this->baseCheminDocuware . 'ORDRE_DE_MISSION/' . $fileName;
+        $cheminDestinationLocal = $this->baseCheminDuFichier . 'magasin/devis/' . $numeroDevis . '/' . $fileName;
+        $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
+    }
+
+    // BL - INTERNE FTU
+    public function copyToDWBlFutInterne($fileName)
+    {
+        $cheminFichierDistant = $this->baseCheminDocuware . 'BON DE SORTIE FTU/' . $fileName;
+        $cheminDestinationLocal = $this->baseCheminDuFichier . 'bl/' . $fileName;
+        $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
+    }
+
+    //FACTURE -BL (clients) FTU
+    public function copyToDWBlFutFactureClient($fileName)
+    {
+        $cheminFichierDistant = $this->baseCheminDocuware . 'BONLIV EXTERNE MAGFTU/' . $fileName;
+        $cheminDestinationLocal = $this->baseCheminDuFichier . 'bl/' . $fileName;
         $this->copyFile($cheminDestinationLocal, $cheminFichierDistant);
     }
 
@@ -267,5 +311,36 @@ class GeneratePdf
         // Afficher la ligne de séparation
         $pdf->Cell(0, 10, $line, 0, 1, 'C'); // Une cellule contenant la ligne
         //$pdf->Ln(5); // Ajouter un espacement en dessous de la ligne
+    }
+
+    protected function renderTextWithLine($pdf, $text, $totalWidth = 190, $lineOffset = 3, $font = 'helvetica', $fontStyle = 'B', $fontSize = 11, $textColor = [14, 65, 148], $lineColor = [14, 65, 148], $lineHeight = 1)
+    {
+        // Set font and text color
+        $pdf->setFont($font, $fontStyle, $fontSize);
+        $pdf->SetTextColor($textColor[0], $textColor[1], $textColor[2]);
+
+        // Calculate text width
+        $textWidth = $pdf->GetStringWidth($text);
+
+        // Add the text
+        $pdf->Cell($textWidth, 6, $text, 0, 0, 'L');
+
+        // Set fill color for the line
+        $pdf->SetFillColor($lineColor[0], $lineColor[1], $lineColor[2]);
+
+        // Calculate the remaining width for the line
+        $remainingWidth = $totalWidth - $textWidth - $lineOffset;
+
+        // Calculate the position for the line (next to the text)
+        $lineStartX = $pdf->GetX() + $lineOffset; // Add a small offset
+        $lineStartY = $pdf->GetY() + 3; // Adjust for alignment
+
+        // Draw the line
+        if ($remainingWidth > 0) { // Only draw if there is space left for the line
+            $pdf->Rect($lineStartX, $lineStartY, $remainingWidth, $lineHeight, 'F');
+        }
+
+        // Move to the next line
+        $pdf->Ln(6, true);
     }
 }

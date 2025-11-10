@@ -4,13 +4,11 @@
 
 namespace App\Twig;
 
-use App\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\GlobalsInterface;
 use Twig\Extension\AbstractExtension;
 use App\Entity\admin\utilisateur\User;
 use App\Model\dom\DomModel;
-use App\Entity\tik\DemandeSupportInformatique;
-use App\Model\dw\DossierInterventionAtelierModel;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -21,12 +19,17 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
 {
     private $session;
     private $requestStack;
+    private $tokenStorage;
+    private $em;
 
 
-    public function __construct(SessionInterface $session, RequestStack $requestStack, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(SessionInterface $session, RequestStack $requestStack, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
     {
+
         $this->session = $session;
         $this->requestStack = $requestStack;
+        $this->tokenStorage = $tokenStorage;
+        $this->em = $em;
     }
 
     public function getGlobals(): array
@@ -38,7 +41,7 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
         $this->session->remove('notification'); // Supprime la notification après l'affichage
 
         if ($this->session->get('user_id') !== null) {
-            $user = Controller::getEntity()->getRepository(User::class)->find($this->session->get('user_id'));
+            $user = $this->em->getRepository(User::class)->find($this->session->get('user_id'));
         }
 
         return [
@@ -57,7 +60,9 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_path_or_max', [$this, 'getPathOrMax']),
+            new TwigFunction('trop_percu', [$this, 'tropPercu']),
         ];
     }
+
+
 }

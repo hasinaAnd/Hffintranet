@@ -4,12 +4,19 @@ namespace App\Entity\admin;
 
 
 use App\Entity\dom\Dom;
+use App\Entity\badm\Badm;
+use App\Entity\cas\Casier;
 use App\Entity\admin\Service;
 use App\Entity\Traits\DateTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\cas\CasierValider;
+use App\Entity\mutation\Mutation;
 use App\Entity\admin\utilisateur\User;
+use App\Entity\da\DemandeAppro;
+use App\Entity\dit\DemandeIntervention;
 use App\Repository\admin\AgenceRepository;
 use Doctrine\Common\Collections\Collection;
+use App\Entity\tik\DemandeSupportInformatique;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -28,14 +35,14 @@ class Agence
     private $id;
 
     /**
-     * @ORM\Column("string", name="code_agence")
+     * @ORM\Column(type="string", name="code_agence")
      *
      * @var string
      */
     private string  $codeAgence;
 
     /**
-     * @ORM\Column("string", name="libelle_agence")
+     * @ORM\Column(type="string", name="libelle_agence")
      *
      * @var string
      */
@@ -49,17 +56,6 @@ class Agence
     private Collection $services;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=Dom::class, mappedBy="agenceEmetteurId")
-     */
-    private $domAgenceEmetteur;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Dom::class, mappedBy="agenceDebiteurId")
-     */
-    private $domAgenceDebiteur;
-
-
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="agencesAutorisees")
@@ -71,12 +67,12 @@ class Agence
     private $usersAutorises;
 
 
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
+
         $this->usersAutorises = new ArrayCollection();
-        $this->domAgenceEmetteur = new ArrayCollection();
-        $this->domAgenceDebiteur = new ArrayCollection();
     }
 
     public function getId()
@@ -156,86 +152,6 @@ class Agence
             $this->usersAutorises->removeElement($user);
             $user->removeAgenceAutorise($this);
         }
-
-        return $this;
-    }
-
-
-
-
-
-
-    /** DOM */
-
-    public function getDomAgenceEmetteurs()
-    {
-        return $this->domAgenceEmetteur;
-    }
-
-    public function addDomAgenceEmetteur(Dom $domAgenceEmetteur): self
-    {
-        if (!$this->domAgenceEmetteur->contains($domAgenceEmetteur)) {
-            $this->domAgenceEmetteur[] = $domAgenceEmetteur;
-            $domAgenceEmetteur->setAgenceEmetteurId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDomAgenceEmetteur(Dom $domAgenceEmetteur): self
-    {
-        if ($this->domAgenceEmetteur->contains($domAgenceEmetteur)) {
-            $this->domAgenceEmetteur->removeElement($domAgenceEmetteur);
-            if ($domAgenceEmetteur->getAgenceEmetteurId() === $this) {
-                $domAgenceEmetteur->setAgenceEmetteurId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function setDomAgenceEmetteurs($domAgenceEmetteur)
-    {
-        $this->domAgenceEmetteur = $domAgenceEmetteur;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Get the value of demandeInterventions
-     */
-    public function getDomAgenceDebiteurs()
-    {
-        return $this->domAgenceDebiteur;
-    }
-
-    public function addDomAgenceDebiteurs(Dom $domAgenceDebiteur): self
-    {
-        if (!$this->domAgenceDebiteur->contains($domAgenceDebiteur)) {
-            $this->domAgenceDebiteur[] = $domAgenceDebiteur;
-            $domAgenceDebiteur->setAgenceDebiteurId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDomAgenceDebiteur(Dom $domAgenceDebiteur): self
-    {
-        if ($this->domAgenceDebiteur->contains($domAgenceDebiteur)) {
-            $this->domAgenceDebiteur->removeElement($domAgenceDebiteur);
-            if ($domAgenceDebiteur->getAgenceDebiteurId() === $this) {
-                $domAgenceDebiteur->setAgenceDebiteurId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function setDomAgenceDebiteurs($domAgenceDebiteur)
-    {
-        $this->domAgenceDebiteur = $domAgenceDebiteur;
 
         return $this;
     }
