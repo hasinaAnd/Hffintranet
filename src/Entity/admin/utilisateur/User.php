@@ -121,13 +121,6 @@ class User implements UserInterface
 
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=UserLogger::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $userLoggers;
-
-
-
 
     //=================================================================================================================================
 
@@ -138,7 +131,6 @@ class User implements UserInterface
         $this->agencesAutorisees = new ArrayCollection();
         $this->serviceAutoriser = new ArrayCollection();
         $this->permissions = new ArrayCollection();
-        $this->userLoggers = new ArrayCollection();
     }
 
 
@@ -453,37 +445,6 @@ class User implements UserInterface
 
     public function getUserIdentifier() {}
 
-    /**
-     * Get the value of userLoggers
-     */
-    public function getUserLoggers(): Collection
-    {
-        return $this->userLoggers;
-    }
-
-    /**
-     * Add value to userLoggers
-     *
-     * @return self
-     */
-    public function addUserLogger(UserLogger $userLogger): self
-    {
-        $this->userLoggers[] = $userLogger;
-        $userLogger->setUser($this); // Synchronisation inverse
-        return $this;
-    }
-
-    /**
-     * Set the value of userLoggers
-     *
-     * @return  self
-     */
-    public function setUserLoggers($userLoggers)
-    {
-        $this->userLoggers = $userLoggers;
-
-        return $this;
-    }
 
 
     /** 
