@@ -35,3 +35,6 @@ VALUES
         18,
         'HFF'
 );
+
+--- nouveau colonne à ajouter dans la table Personnel pour la gestion des directions
+ALTER TABLE Personnel ADD group_direction bit DEFAULT 0;

@@ -8,7 +8,7 @@ CREATE TABLE demande_de_conge
     Date_Demande DATE,
     Agence_Service CHAR(10),
     Adresse_Mail_Demandeur CHAR(100),
-    Sous_type_decument CHAR(100),
+    Sous_type_document CHAR(100),
     Duree_Conge DECIMAL(5,2),
     Date_Debut DATE,
     Date_Fin DATE,
