@@ -596,7 +596,7 @@ class CongeController extends Controller
 
 
     /**
-     * @Route("/api/matricule-nom-prenom")
+     * @Route("/api/personnel-matricule-nom-prenoms")
      */
     public function getMatriculeNomPrenom(Request $request)
     {
