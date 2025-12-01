@@ -3,7 +3,6 @@ import { baseUrl } from "./utils/config";
 import { FetchManager } from "./api/FetchManager";
 import { afficherToast } from "./utils/toastUtils";
 import { displayOverlay } from "./utils/ui/overlay";
-import { preloadAllData } from "./da/data/preloadData";
 
 // Instanciation de FetchManager avec la base URL
 const fetchManager = new FetchManager();
@@ -124,14 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("hasDAP", hasDAPinput.dataset.hasDap);
   } else {
     console.log("hasDAPinput n'existe pas");
-  }
-
-  if (localStorage.getItem("hasDAP") === "1") {
-    (async () => {
-      await preloadAllData(); // préchargement des données dans fournisseur et désignation
-    })();
-  } else {
-    console.log("Pas besoin de preloadData");
   }
 
   // Les dropdowns
