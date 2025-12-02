@@ -1,3 +1,5 @@
+{% set role_ids = App.user.roleIds %}
+
 <div class="accordion" id="accordionConge">
 	<div class="accordion-item">
 		<h2 class="accordion-header">
@@ -60,7 +62,7 @@
 					<div class="col-md-3">
 						{{ form_row(form.statutDemande, {'attr': {'class': 'form-select-sm'}}) }}
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-3 {{ 1 in role_ids or 11 in role_ids ? '' : 'd-none' }}">
 						{{ form_row(form.groupeDirection, {'attr': {'class': 'form-select-sm'}}) }}
 					</div>
 					<div class="col-12 text-end">
